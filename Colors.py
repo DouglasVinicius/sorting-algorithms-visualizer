@@ -1,10 +1,10 @@
 from enum import Enum
 
-class Colors(Enum):
-    BLACK = 0,0,0
-    WHITE = 255,255,255
-    DARK_GREY = 192,192,192
-    GREY = 128,128,128
-    LIGHT_GREY = 64,64,64
-    BLUE = 0,0,255
-    RED = 255,0,0
+class Colors:
+    BLACK = 0, 0, 0
+    WHITE = 255, 255, 255
+    DARK_GREY = 192, 192, 192
+    GREY = 128, 128, 128
+    LIGHT_GREY = 64, 64, 64
+    BLUE = 0, 0, 255
+    RED = 255, 0, 0
