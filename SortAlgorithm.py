@@ -3,56 +3,83 @@ class SortAlgorithm:
         self.__dataset = dataset
         self.__sort_algorithm
 
-    def insertion_sort(self):
-        size = len(self.__dataset)
+    def insertion_sort(visualizer, ascending, dataset):
+        size = len(dataset)
 
         for first_index in range(1, size):
-            current_value = self.__dataset[first_index]
+            current_value = dataset[first_index]
             for second_index in range(first_index-1, 0, -1):
-                if(self.__dataset[second_index] < current_value):
-                    self.__dataset[second_index+1] = current_value
+                visualizer.comparisons += 1
+                visualizer.draw_dataset(second_index, first_index, first_index, True, True)
+                yield True
+
+                if((dataset[second_index] > current_value and ascending) or (dataset[second_index] < current_value and not ascending)):
+                    dataset[second_index+1] = current_value
                     break
-                self.swap(second_index, second_index+1)
+                SortAlgorithm.swap(dataset, second_index, second_index+1)
 
-    def bubble_sort(self):
-        size = len(self.__dataset)
+        return dataset
 
-        for first_index in range(0, size):
-            for second_index in range(0, size-first_index):
-                if(self.__dataset[second_index] > self.__dataset[second_index+1]):
-                    self.swap(second_index, second_index+1)
 
-    def selection_sort(self):
-        size = len(self.__dataset)
+    def bubble_sort(visualizer, ascending, dataset):
+        size = len(dataset)
+
+        for first_index in range(size-1):
+            for second_index in range(size-first_index-1):
+                visualizer.comparisons += 1
+
+                if((dataset[second_index] < dataset[second_index+1] and ascending) or (dataset[second_index] > dataset[second_index+1] and not ascending)):
+                    SortAlgorithm.swap(dataset, second_index, second_index+1)
+
+                visualizer.draw_dataset(second_index, size-first_index, second_index+1, True, False)
+            yield True
+        return dataset
+
+
+    def selection_sort(visualizer, ascending, dataset):
+        size = len(dataset)
 
         for first_index in range(0, size):
             lower = first_index
             for second_index in range(first_index+1, size):
-                if(self.__dataset[second_index] < self.__dataset[lower]):
+                visualizer.comparisons += 1
+                visualizer.draw_dataset(second_index, first_index, lower, True, True)
+
+                if((dataset[second_index] < dataset[lower] and ascending) or (dataset[second_index] > dataset[lower] and not ascending)):
                     lower = second_index
-            self.swap(first_index, lower)
+                yield True
+            SortAlgorithm.swap(dataset, first_index, lower)
+
+        return dataset
+
 
     def merge_sort(self):
         pass
 
+
     def quick_sort(self):
         pass
 
-    def swap(self, first_value_index, second_value_index):
-        self.__dataset[first_value_index], self.__dataset[second_value_index] = self.__dataset[second_value_index], self.__dataset[first_value_index]
 
-    @property
-    def dataset(self):
-        return self.__dataset
+    def swap(dataset, first_value_index, second_value_index):
+        dataset[first_value_index], dataset[second_value_index] = dataset[second_value_index], dataset[first_value_index]
 
-    @dataset.setter
-    def dataset(self, dataset):
-        self.__dataset = dataset
 
-    @property
-    def sort_algorithm(self):
-        return self.__sort_algorithm
+#     def bubble_sort_test():
+#         dataset = []
+#         with open("random_file.dat") as file:
+#             for value in file.readlines():
+#                 dataset.append(int(value))
+#         size = len(dataset)
+#         print(dataset)
+#         for first_index in range(size-1):
+#             for second_index in range(size-first_index-1):
 
-    @sort_algorithm.setter
-    def sort_algorithm(self, sort_algorithm):
-        self.__sort_algorithm = sort_algorithm
+#                 if(dataset[second_index] > dataset[second_index+1]):
+#                     SortAlgorithm.swap(dataset, second_index, second_index+1)
+
+#         print(dataset)
+
+
+
+# SortAlgorithm.bubble_sort_test()
