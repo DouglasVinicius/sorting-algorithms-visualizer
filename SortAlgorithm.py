@@ -11,7 +11,7 @@ class SortAlgorithm:
                     SortAlgorithm.swap(dataset, second_index, second_index+1)
 
                 visualizer.draw_writer(True)
-                visualizer.draw_dataset(second_index, size-first_index, second_index+1, False)
+                visualizer.draw_dataset(second_index, size-1-first_index, second_index+1, False)
                 yield True
         return dataset
 
@@ -24,7 +24,7 @@ class SortAlgorithm:
             for second_index in range(first_index-1, -1, -1):
                 visualizer.comparisons += 1
                 visualizer.draw_writer(True)
-                visualizer.draw_dataset(second_index, first_index, first_index, True)
+                visualizer.draw_dataset(second_index, first_index+1, first_index+1, True)
                 yield True
 
                 if((dataset[second_index] < current_value and ascending) or (dataset[second_index] > current_value and not ascending)):

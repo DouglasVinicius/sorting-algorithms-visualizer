@@ -136,7 +136,7 @@ class VisualGraphic:
             if(color_position_red == index):
                 current_bar_color = Colors.RED
             if(color_position_blue == index):
-                current_bar_color == Colors.BLUE
+                current_bar_color = Colors.BLUE
 
             pygame.draw.rect(self.__screen, current_bar_color, (bar_coordinate_x, bar_coordinate_y, self.__bar_width_size, self.__height))
             
