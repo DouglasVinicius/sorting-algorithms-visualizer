@@ -23,7 +23,7 @@ class VisualGraphic:
         clock = pygame.time.Clock()
         
         while run:
-            clock.tick(60) #fps
+            clock.tick(self.__speed) #fps
 
             if(self.__sorting):
                 try:
@@ -59,6 +59,12 @@ class VisualGraphic:
                     self.ascending = True
                 elif(event.key == pygame.K_d and not self.__sorting and self.ascending):
                     self.ascending = False
+                elif(event.key == pygame.K_F6):
+                    if(self.__speed > 8):
+                        self.__speed /= 2
+                elif(event.key == pygame.K_F8):
+                    if(self.__speed < 240):
+                        self.__speed *= 2
                 elif(event.key == pygame.K_0):
                     self.__algorithm_name = "Bubble sort"
                     self.__current_algorithm = SortAlgorithm.bubble_sort
@@ -75,6 +81,7 @@ class VisualGraphic:
     def __build(self):
         self.ascending = True
         self.comparisons = 0
+        self.__speed = 60
         self.__sorting = False
         self.__sorting_algorithm_generator = None
         self.__current_algorithm = SortAlgorithm.bubble_sort
@@ -121,8 +128,11 @@ class VisualGraphic:
         organization_info = self.__font_bigger.render("RESET: R | NEW: N | SORT: SPACE | SAVE DATASET: S | ASCENDING: A | DESCENDING: D", 1, Colors.BLACK)
         self.__screen.blit(organization_info, (self.__width/2 - organization_info.get_width()/2, self.__height*0.08))
 
+        organization_info = self.__font_bigger.render("F6: DECREASE SPEED | F8: INCREASE SPEED ", 1, Colors.BLACK)
+        self.__screen.blit(organization_info, (self.__width/2 - organization_info.get_width()/2, self.__height*0.14))
+
         sorting_algorithm_info = self.__font_bigger.render("BUBBLE: 0 | INSERTION: 1 | SELECTION: 2", 1, Colors.BLACK)
-        self.__screen.blit(sorting_algorithm_info, (self.__width/2 - sorting_algorithm_info.get_width()/2, self.__height*0.14))
+        self.__screen.blit(sorting_algorithm_info, (self.__width/2 - sorting_algorithm_info.get_width()/2, self.__height*0.20))
 
 
     def draw_dataset(self, color_position_red = None, color_position_green = None, color_position_blue = None, before_green = True):
