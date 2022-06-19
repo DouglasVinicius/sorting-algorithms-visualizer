@@ -14,7 +14,7 @@ class VisualGraphic:
         self.__max_dataset_value = max_dataset_value
         self.__number_of_elements_in_dataset = number_of_elements_in_dataset
         self.__initial_dataset = self.__generate_new_dataset()
-        self.__current_dataset = self.__initial_dataset
+        self.__current_dataset = self.__initial_dataset.copy()
 
 
     def run(self):
@@ -42,12 +42,12 @@ class VisualGraphic:
 
                 if(event.key == pygame.K_r):
                     self.comparisons = 0
-                    self.__current_dataset = self.__initial_dataset
+                    self.__current_dataset = self.__initial_dataset.copy()
                     self.__sorting = False
                 elif(event.key == pygame.K_n):
                     self.comparisons = 0
                     self.__initial_dataset = self.__generate_new_dataset()
-                    self.__current_dataset = self.__initial_dataset
+                    self.__current_dataset = self.__initial_dataset.copy()
                     self.__sorting = False
                 elif(event.key == pygame.K_s):
                     self.__save_unsorted_dataset_on_file() 
@@ -131,9 +131,9 @@ class VisualGraphic:
 
             if(color_position_green != None and ((index < color_position_green and before_green) or (index > color_position_green and not before_green))):
                 current_bar_color = Colors.GREEN
-            elif(color_position_red == index):
+            if(color_position_red == index):
                 current_bar_color = Colors.RED
-            elif(color_position_blue == index):
+            if(color_position_blue == index):
                 current_bar_color == Colors.BLUE
 
             pygame.draw.rect(self.__screen, current_bar_color, (bar_coordinate_x, bar_coordinate_y, self.__bar_width_size, self.__height))
@@ -148,10 +148,5 @@ class VisualGraphic:
                 output_file.write(f"{value}\n")
 
 
-    @property
-    def current_dataset(self):
-        return self.__current_dataset
-
-
-test = VisualGraphic(1, 200, 100)
+test = VisualGraphic(1, 200, 50)
 test.run()
