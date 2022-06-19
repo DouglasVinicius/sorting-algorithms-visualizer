@@ -52,6 +52,7 @@ class VisualGraphic:
                 elif(event.key == pygame.K_s):
                     self.__save_unsorted_dataset_on_file() 
                 elif(event.key == pygame.K_SPACE and not self.__sorting):
+                    self.comparisons = 0
                     self.__sorting = True
                     self.__sorting_algorithm_generator = self.__current_algorithm(self, self.ascending, self.__current_dataset)
                 elif(event.key == pygame.K_a and not self.__sorting and not self.ascending):
@@ -106,7 +107,15 @@ class VisualGraphic:
     def __init_screen(self):
         self.__screen.fill((self.__background_color)) #fill all screen with this color
 
-        execution_info = self.__font_smaller.render(f"Algorithm name: {self.__algorithm_name} - Dataset size: {self.__number_of_elements_in_dataset} - Comparisons: {0}", 1, Colors.BLACK)
+        self.draw_writer()
+        self.draw_dataset()
+
+
+    def draw_writer(self, clear_background = False):
+        if(clear_background):
+            self.__screen.fill((self.__background_color))
+
+        execution_info = self.__font_smaller.render(f"Algorithm name: {self.__algorithm_name} - Dataset size: {self.__number_of_elements_in_dataset} - Comparisons: {self.comparisons}", 1, Colors.BLACK)
         self.__screen.blit(execution_info, (self.__width/2 - execution_info.get_width()/2, self.__height*0.02))
 
         organization_info = self.__font_bigger.render("RESET: R | NEW: N | SORT: SPACE | SAVE DATASET: S | ASCENDING: A | DESCENDING: D", 1, Colors.BLACK)
@@ -115,15 +124,8 @@ class VisualGraphic:
         sorting_algorithm_info = self.__font_bigger.render("BUBBLE: 0 | INSERTION: 1 | SELECTION: 2", 1, Colors.BLACK)
         self.__screen.blit(sorting_algorithm_info, (self.__width/2 - sorting_algorithm_info.get_width()/2, self.__height*0.14))
 
-        self.draw_dataset()
-        pygame.display.update()
 
-
-    def draw_dataset(self, color_position_red = None, color_position_green = None, color_position_blue = None, clear_background = False, before_green = True):
-        if(clear_background):
-            clear_rectangle = (self.__side_padding/2, self.__top_padding, (self.__width - self.__side_padding), (self.__height - self.__top_padding))
-            pygame.draw.rect(self.__screen, self.__background_color, clear_rectangle)
-
+    def draw_dataset(self, color_position_red = None, color_position_green = None, color_position_blue = None, before_green = True):
         for index, value in enumerate(self.__current_dataset):
             bar_coordinate_x = self.__bar_start_coordinate_x + index * self.__bar_width_size
             bar_coordinate_y = self.__height - (value - self.__min_dataset_value) * self.__bar_height_size
@@ -138,8 +140,7 @@ class VisualGraphic:
 
             pygame.draw.rect(self.__screen, current_bar_color, (bar_coordinate_x, bar_coordinate_y, self.__bar_width_size, self.__height))
             
-        if(clear_background):
-            pygame.display.update()
+        pygame.display.update()
 
 
     def __save_unsorted_dataset_on_file(self):
