@@ -94,61 +94,50 @@ class SortAlgorithm:
         dataset[first_value_index], dataset[second_value_index] = dataset[second_value_index], dataset[first_value_index]
 
 
-    # def merge_sort_test(ascending, dataset):
-    #     merge_level = 0
-    #     subset_size = (2**merge_level)*2
-    #     dataset_size = len(dataset)
+    def merge_sort_test(ascending, dataset):
+        merge_level = 0
+        subset_size = (2**merge_level)*2
+        dataset_size = len(dataset)
 
-    #     while(subset_size < dataset_size):
-    #         for subset_init in range(0, dataset_size, subset_size):
-    #             if(subset_init + subset_size < dataset_size):
-    #                 max_subset_size = (subset_init + subset_size)
-    #             else:
-    #                 max_subset_size = dataset_size
-    #                 #if(((subset_init + max_subset_size) // 2) - subset_init == 0):
-    #                 #    continue
+        while(subset_size < dataset_size):
+            for element_index in range(dataset_size):
+                subset_element_index, first_subset, second_subset = SortAlgorithm.new_subsets_elements()
+                if(element_index % subset_size == 0):
+                    subset_element_index, first_subset, second_subset = SortAlgorithm.update_subsets_elements()
 
-    #             # middle = (subset_init + max_subset_size) // 2
-    #             middle = (subset_init + max_subset_size) / 2
-    #             if(middle > (subset_init + max_subset_size) // 2):
-    #                middle = int(middle)+1
-    #             else:
-    #                middle = int(middle)
-    #             first_subset_part = dataset[subset_init : middle]
-    #             first_subset_index = 0
-    #             second_subset_part = dataset[middle : (subset_init + subset_size)]
-    #             second_subset_index = 0
+                
 
-    #             for subset_index in range(subset_init, max_subset_size):
-    #                 print(f"{first_subset_index}, {second_subset_index}, {subset_index}")
-    #                 print(f"{dataset}\n")
-    #                 print(f"{first_subset_part}\n")
-    #                 print(f"{second_subset_part}\n")
-    #                 # print(f"{first_subset_part[first_subset_index]}, {second_subset_part[second_subset_index]}")
-    #                 if((first_subset_index < subset_size // 2) and (second_subset_index < max_subset_size - middle) and (len(second_subset_part) != 0) and (len(first_subset_part) != 0)):
-    #                     if((first_subset_part[first_subset_index] < second_subset_part[second_subset_index] and ascending) or (first_subset_part[first_subset_index] > second_subset_part[second_subset_index] and not ascending)):
-    #                         dataset[subset_index] = first_subset_part[first_subset_index]
-    #                         first_subset_index += 1
-    #                     else:
-    #                         dataset[subset_index] = second_subset_part[second_subset_index]
-    #                         second_subset_index += 1
-    #                 elif((first_subset_index < subset_size // 2) and len(first_subset_part) != 0):
-    #                     dataset[subset_index] = first_subset_part[first_subset_index]
-    #                     first_subset_index += 1
-    #                 elif(len(second_subset_part)):
-    #                     dataset[subset_index] = second_subset_part[second_subset_index]
-    #                     second_subset_index += 1
+                subset_element_index += 1
                     
 
-    #         merge_level += 1
-    #         subset_size = (2**merge_level)*2
+            merge_level += 1
+            subset_size = (2**merge_level)*2
 
-    #     return dataset
+        return dataset
 
-#dataset = []
-#with open("random_file.dat", "r") as file:
-#    for value in file.readlines():
-#        dataset.append(int(value))
+    def update_subsets_elements(dataset, start_of_subset, subset_size):
+        end_of_subset = start_of_subset + subset_size
+        if(start_of_subset + subset_size > len(dataset)):
+            end_of_subset = len(dataset)
+        middle_of_dataset = (start_of_subset + end_of_subset) // 2
 
-#print(dataset)
-#print(SortAlgorithm.merge_sort_test(True, dataset))
+        subset_element_index = 0
+        first_subset = dataset[start_of_subset : middle_of_dataset]
+        second_subset = dataset[middle_of_dataset : end_of_subset]
+
+        return subset_element_index, first_subset, second_subset
+
+    def new_subsets_elements():
+        subset_element_index = 0
+        first_subset = []
+        second_subset = []
+
+        return subset_element_index, first_subset, second_subset
+
+dataset = []
+with open("random_file.dat", "r") as file:
+   for value in file.readlines():
+       dataset.append(int(value))
+
+print(dataset)
+print(SortAlgorithm.merge_sort_test(True, dataset))
