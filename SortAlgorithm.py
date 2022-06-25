@@ -1,3 +1,5 @@
+import math
+
 class SortAlgorithm:
 
     def bubble_sort(visualizer, ascending, dataset):
@@ -54,52 +56,15 @@ class SortAlgorithm:
 
 
     def merge_sort(visualizer, ascending, dataset):
-        merge_level = 0
-        subset_size = (2**merge_level)*2
+        merge_level = 1
+        subset_size = (2**merge_level)
         dataset_size = len(dataset)
+        
+        logtwo_roundup = int(math.log2(dataset_size))
+        if(logtwo_roundup < math.log2(dataset_size)):
+            logtwo_roundup += 1
 
-        while(subset_size < dataset_size):
-            for subset_init in range(0, dataset_size, subset_size):
-                middle = (subset_init + (subset_init + subset_size)) // 2
-                first_subset_part = dataset[subset_init : middle]
-                first_subset_index = 0
-                second_subset_part = dataset[middle : (subset_init + subset_size)]
-                second_subset_index = 0
-
-                for subset_index in range(subset_init, subset_init+subset_size):
-                    if((first_subset_index < subset_size // 2) and (second_subset_index < subset_size - subset_size // 2)):
-                        if((first_subset_part[first_subset_index] < second_subset_part[second_subset_index] and ascending) or (first_subset_part[first_subset_index] > second_subset_part[second_subset_index] and not ascending)):
-                            dataset[subset_index] = first_subset_part[first_subset_index]
-                            first_subset_index += 1
-                        else:
-                            dataset[subset_index] = second_subset_part[second_subset_index]
-                            second_subset_index += 1
-                    elif(first_subset_index < subset_size // 2):
-                        dataset[subset_index] = first_subset_part[first_subset_index]
-                        first_subset_index += 1
-                    else:
-                        dataset[subset_index] = second_subset_part[second_subset_index]
-                        second_subset_index += 1
-                    
-
-            merge_level += 1
-            subset_size = (2**merge_level)*2
-
-
-    def quick_sort(visualizer, ascending, dataset):
-        pass
-
-
-    def swap(dataset, first_value_index, second_value_index):
-        dataset[first_value_index], dataset[second_value_index] = dataset[second_value_index], dataset[first_value_index]
-
-
-    def merge_sort_test(ascending, dataset):
-        merge_level = 0
-        subset_size = (2**merge_level)*2
-        dataset_size = len(dataset)
-
-        while(subset_size < dataset_size):
+        while(merge_level <= logtwo_roundup):
             subset_index, first_subset_index, second_subset_index, first_subset, second_subset = SortAlgorithm.new_subsets_elements()
             for element_index in range(dataset_size):
                 if(element_index % subset_size == 0):
@@ -107,7 +72,7 @@ class SortAlgorithm:
                     subset_index += 1
 
                 if((first_subset_index < len(first_subset)) and (second_subset_index < len(second_subset))):
-                    if(first_subset[first_subset_index] < second_subset[second_subset_index]):
+                    if(((first_subset[first_subset_index] < second_subset[second_subset_index]) and ascending) or ((first_subset[first_subset_index] > second_subset[second_subset_index]) and not ascending)):
                         dataset[element_index] = first_subset[first_subset_index]
                         first_subset_index += 1
                     else:
@@ -117,23 +82,42 @@ class SortAlgorithm:
                     dataset[element_index] = first_subset[first_subset_index]
                     first_subset_index += 1
                 else:
-                    dataset[element_index] = second_subset[second_subset_index]                  
+                    dataset[element_index] = second_subset[second_subset_index]
+                    second_subset_index += 1
+
+                visualizer.comparisons += 1
+                visualizer.draw_writer(True)
+                if(merge_level != logtwo_roundup):
+                    visualizer.draw_dataset(color_position_red = subset_index*subset_size+first_subset_index, color_position_blue = subset_index*subset_size+second_subset_index)
+                else:
+                    visualizer.draw_dataset(subset_index*subset_size+first_subset_index, element_index, subset_index*subset_size+second_subset_index)
+                yield True        
 
             merge_level += 1
-            subset_size = (2**merge_level)*2
-
+            subset_size = (2**merge_level)
+    
         return dataset
+
+
+    def quick_sort(visualizer, ascending, dataset):
+        pass  
+
+
+    def swap(dataset, first_value_index, second_value_index):
+        dataset[first_value_index], dataset[second_value_index] = dataset[second_value_index], dataset[first_value_index]
+
 
     def update_subsets_elements(dataset, start_of_subset, subset_size):
         end_of_subset = start_of_subset + subset_size
-        if(start_of_subset + subset_size > len(dataset)):
-            end_of_subset = len(dataset)
         middle_of_dataset = (start_of_subset + end_of_subset) // 2
 
         first_subset_index = 0
         second_subset_index = 0
         first_subset = dataset[start_of_subset : middle_of_dataset]
-        second_subset = dataset[middle_of_dataset : end_of_subset]
+        if(start_of_subset + subset_size > len(dataset)):
+            second_subset = dataset[middle_of_dataset : len(dataset)]
+        else:
+            second_subset = dataset[middle_of_dataset : end_of_subset]
 
         return first_subset_index, second_subset_index, first_subset, second_subset
 
@@ -145,11 +129,3 @@ class SortAlgorithm:
         second_subset = []
 
         return subset_index, first_subset_index, second_subset_index, first_subset, second_subset
-
-dataset = []
-with open("random_file.dat", "r") as file:
-   for value in file.readlines():
-       dataset.append(int(value))
-
-print(dataset)
-print(SortAlgorithm.merge_sort_test(True, dataset))

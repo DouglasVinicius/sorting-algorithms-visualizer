@@ -74,6 +74,9 @@ class VisualGraphic:
                 elif(event.key == pygame.K_2):
                     self.__algorithm_name = "Selection sort"
                     self.__current_algorithm = SortAlgorithm.selection_sort
+                elif(event.key == pygame.K_3):
+                    self.__algorithm_name = "Merge sort"
+                    self.__current_algorithm = SortAlgorithm.merge_sort
 
         pygame.quit()
 
@@ -85,7 +88,7 @@ class VisualGraphic:
         self.__sorting = False
         self.__sorting_algorithm_generator = None
         self.__current_algorithm = SortAlgorithm.bubble_sort
-        self.__algorithm_name = "Bubble Sort"
+        self.__algorithm_name = "Bubble sort"
         self.__gradients = [
             Colors.LIGHT_GREY,
             Colors.GREY,
@@ -159,5 +162,5 @@ class VisualGraphic:
                 output_file.write(f"{value}\n")
 
 
-test = VisualGraphic(1, 200, 50)
+test = VisualGraphic(1, 200, 64)
 test.run()
