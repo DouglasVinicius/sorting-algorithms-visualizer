@@ -1,4 +1,6 @@
 import math
+import random
+import queue
 
 class SortAlgorithm:
 
@@ -100,7 +102,7 @@ class SortAlgorithm:
 
 
     def quick_sort(visualizer, ascending, dataset):
-        pass  
+        pass
 
 
     def swap(dataset, first_value_index, second_value_index):
@@ -129,3 +131,56 @@ class SortAlgorithm:
         second_subset = []
 
         return subset_index, first_subset_index, second_subset_index, first_subset, second_subset
+
+    
+
+    def choose_pivot_middle_of_three(dataset, start, end):
+        start_value = dataset[start]
+        middle_value = dataset[(end+start)//2]
+        end_value = dataset[end]
+
+        if(start_value > middle_value):
+            if(start_value > end_value):
+                if(end_value > middle_value):
+                    return end
+                else:
+                    return (end+start)//2
+            else:
+                return start
+        else:
+            if(start_value > end_value):
+                return start
+            else:
+                if(end_value > middle_value):
+                    return (end+start)//2
+                else:
+                    return end
+
+    def choose_pivot_middle(start, end):
+        middle_index = (start+end)//2
+        return middle_index
+
+    def choose_pivot_random(start, end):
+        random_value = random.randint(start, end)
+        return random_value
+
+    def init_quick_iterators():
+        index_larger = 0
+        index_lower = -1
+        return index_larger, index_lower
+
+    def init_quick_queue(dataset_size):
+        division_queue = queue.Queue()
+        division_queue.put(list(0, dataset_size))
+        return division_queue
+
+    def quick_sort_test(dataset):
+        index_larger, index_lower = SortAlgorithm.init_quick_iterators()
+        division_queue = SortAlgorithm.init_quick_queue(len(dataset))
+        pivot = SortAlgorithm.choose_pivot_middle(0, len(dataset))
+
+        while(not division_queue.empty()):
+            current_dataset = division_queue.get()
+            current_end = len(current_dataset)
+            current
+            first_subset = current_dataset[]
